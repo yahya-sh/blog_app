@@ -3,6 +3,7 @@ alias r := run
 alias s := run
 alias m := migrate
 alias mm := makemigrations
+alias sm := showmigrations
 alias c := command
 alias gl := git-log
 alias gll := git-line-log
@@ -19,11 +20,14 @@ run host="0.0.0.0:8000":
     @uv run manage.py runserver {{host}}
 
 # django migrate 
-migrate app="":
+migrate *app="":
     uv run manage.py migrate {{app}}
 
-makemigrations app="":
+makemigrations *app:
     uv run manage.py makemigrations {{app}}
+
+showmigrations *app:
+    uv run manage.py showmigrations {{app}}
 
 shell:
     uv run manage.py shell
@@ -31,7 +35,7 @@ shell:
 collectstatic:
     uv run manage.py collectstatic --no-input
 
-command cmd:
+command +cmd:
     uv run manage.py {{cmd}}
 
 git-log:
