@@ -2,6 +2,8 @@ alias serve := run
 alias r := run
 alias s := run
 alias m := migrate
+alias mfresh := migrate-fresh
+alias fresh := migrate-fresh
 alias mm := makemigrations
 alias sm := showmigrations
 alias c := django
@@ -30,6 +32,10 @@ run host="0.0.0.0:8000":
 
 # django migrate 
 migrate *app="":
+    uv run manage.py migrate {{app}}
+
+migrate-fresh app migration="zero":
+    uv run manage.py migrate {{app}} {{migration}}
     uv run manage.py migrate {{app}}
 
 makemigrations *app:
