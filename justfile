@@ -4,7 +4,8 @@ alias s := run
 alias m := migrate
 alias mm := makemigrations
 alias sm := showmigrations
-alias c := command
+alias c := django
+alias command := django
 alias log := git-log
 alias llog := git-line-log
 alias gllog := git-log
@@ -43,7 +44,7 @@ shell:
 collectstatic:
     uv run manage.py collectstatic --no-input
 
-command +cmd:
+django +cmd:
     uv run manage.py {{cmd}}
 
 git-log:
