@@ -5,15 +5,19 @@ alias m := migrate
 alias mm := makemigrations
 alias sm := showmigrations
 alias c := command
+alias log := git-log
+alias llog := git-line-log
 alias gllog := git-log
 alias gl := git-log
 alias gll := git-line-log
+alias commit := git-commit
 alias gcommit := git-commit
 alias gc := git-commit
+alias amend := git-amend
 alias gamend := git-amend
 alias gpush := git-push
 alias gp := git-push
-
+alias push := git-push
 
 [default]
 default:
