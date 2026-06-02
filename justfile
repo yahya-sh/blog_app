@@ -3,6 +3,7 @@ alias r := run
 alias s := run
 alias m := migrate
 alias mm := makemigrations
+alias c := command
 
 
 [default]
@@ -25,3 +26,6 @@ shell:
 
 collectstatic:
     uv run manage.py collectstatic --no-input
+
+command cmd:
+    uv run manage.py {{cmd}}
