@@ -4,6 +4,8 @@ alias s := run
 alias m := migrate
 alias mm := makemigrations
 alias c := command
+alias gl := git-log
+alias gll := git-line-log
 
 
 [default]
@@ -29,3 +31,9 @@ collectstatic:
 
 command cmd:
     uv run manage.py {{cmd}}
+
+git-log:
+    git log
+
+git-line-log:
+    git log --oneline --graph
