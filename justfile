@@ -6,6 +6,8 @@ alias mm := makemigrations
 alias c := command
 alias gl := git-log
 alias gll := git-line-log
+alias gc := git-commit
+alias gamend := git-amend
 
 
 [default]
@@ -37,3 +39,9 @@ git-log:
 
 git-line-log:
     git log --oneline --graph
+
+git-commit message:
+    git commit -m "{{message}}"
+
+git-amend:
+    git commit --amend
