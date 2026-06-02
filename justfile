@@ -5,10 +5,14 @@ alias m := migrate
 alias mm := makemigrations
 alias sm := showmigrations
 alias c := command
+alias gllog := git-log
 alias gl := git-log
 alias gll := git-line-log
+alias gcommit := git-commit
 alias gc := git-commit
 alias gamend := git-amend
+alias gpush := git-push
+alias gp := git-push
 
 
 [default]
@@ -49,3 +53,6 @@ git-commit message:
 
 git-amend:
     git commit --amend
+
+git-push remote="origin" branch="main" *args:
+    git push {{remote}} {{branch}} {{args}}
