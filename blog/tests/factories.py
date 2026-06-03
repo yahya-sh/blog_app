@@ -4,22 +4,11 @@ from factory.django import DjangoModelFactory
 from blog import models
 from faker import Faker
 from pytest_factoryboy import register
-from django.contrib.auth import get_user_model
 from .blog_tags import BLOG_TAGS
 from django.utils import timezone
+from user.tests.factories import UserFactory
 
 fake = Faker()
-
-
-@register
-class UserFactory(DjangoModelFactory):
-    class Meta:
-        model = get_user_model()
-        django_get_or_create = ("username",)
-
-    first_name = factory.Faker("first_name")
-    last_name = factory.Faker("last_name")
-    username = factory.Faker("user_name")
 
 
 @register
