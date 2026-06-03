@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth import get_user_model
 from django.utils.text import slugify
-
+from django.utils import timezone
 # Create your models here.
 
 
@@ -19,6 +19,10 @@ class Tag(models.Model):
     def __str__(self):
         return self.name.capitalize()
 
+class BlogManager(models.Manager):
+    def recent(self):
+        return self.filter()
+
 
 class Blog(models.Model):
     author = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
@@ -29,11 +33,16 @@ class Blog(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     published = models.BooleanField(default=False)
+    published_at = models.DateTimeField(null=True)
 
     def save(self, *args, **kwargs):
         # Generate the slug only if it doesn't exist yet (prevents breaking URLs on title updates)
         if not self.slug:
             self.slug = slugify(self.title)
+        
+        # Set value to published_at field if it's None & published field is enabled
+        if self.published_at is None and self.published:
+            self.published_at = timezone.now()
 
         super().save(*args, **kwargs)
 
