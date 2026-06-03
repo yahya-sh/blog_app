@@ -3,7 +3,7 @@ from tests.conftest import *  # noqa: F403
 from tests.conftest import UserFactory, BlogFactory
 import datetime
 from django.db import IntegrityError
-
+from django.utils import timezone
 
 @pytest.mark.django_db
 def test_publishing_blog_auto_assign_published_at(blog_factory: BlogFactory):
@@ -83,3 +83,26 @@ def test_no_blog_slug_duplicate(blog_factory: BlogFactory):
     with pytest.raises(IntegrityError):
         # When
         blog_factory.create(title=title)
+
+
+@pytest.mark.django_db
+def test_recent_published_queryset(blog_factory: BlogFactory):
+    blogs = models.Blog.objects.recent_published().all()
+    assert len(blogs) == 0
+
+    blog_factory.create(published=True, published_at=timezone.now())
+
+    blogs = models.Blog.objects.recent_published().all()
+    assert len(blogs) == 1
+
+    blog_factory.create(published=True, published_at=timezone.now() - timezone.timedelta(days=8))
+
+
+    blogs = models.Blog.objects.recent_published().all()
+    assert len(blogs) == 1
+
+    blog_factory.create(published=True, published_at=timezone.now() + timezone.timedelta(hours=1))
+
+
+    blogs = models.Blog.objects.recent_published().all()
+    assert len(blogs) == 1

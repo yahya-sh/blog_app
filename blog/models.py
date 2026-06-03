@@ -3,6 +3,7 @@ from django.contrib.auth import get_user_model
 from django.utils.text import slugify
 from django.utils import timezone
 from datetime import timedelta
+from datetime import datetime, time
 # Create your models here.
 
 
@@ -26,6 +27,10 @@ class BlogManager(models.Manager):
 
     def recent_published(self, limit=10):
         last_week = timezone.localdate() - timedelta(days=7)
+        last_week = timezone.make_aware(
+            datetime.combine(last_week, time.min),
+            timezone.get_current_timezone(),
+        )
         now = timezone.now()
         return self.published().filter(published_at__lte=now, published_at__gte=last_week).order_by('-published_at')[:limit]
 
