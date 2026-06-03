@@ -1,5 +1,5 @@
 import pytest
-from .factories import BlogFactory
+from tests.conftest import * # noqa: F403
 import datetime
 from django.db import IntegrityError
 
