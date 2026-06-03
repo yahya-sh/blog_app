@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth import get_user_model
 from django.utils.text import slugify
 from django.utils import timezone
+from datetime import timedelta
 # Create your models here.
 
 
@@ -20,8 +21,13 @@ class Tag(models.Model):
         return self.name.capitalize()
 
 class BlogManager(models.Manager):
-    def recent(self):
-        return self.filter()
+    def published(self, published: bool=True):
+        return self.filter(published=published)
+
+    def recent_published(self, limit=10):
+        last_week = timezone.localdate() - timedelta(days=7)
+        now = timezone.now()
+        return self.published().filter(published_at__lte=now, published_at__gte=last_week).order_by('-published_at')[:limit]
 
 
 class Blog(models.Model):
@@ -34,6 +40,8 @@ class Blog(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     published = models.BooleanField(default=False)
     published_at = models.DateTimeField(null=True)
+
+    objects = BlogManager()
 
     def save(self, *args, **kwargs):
         # Generate the slug only if it doesn't exist yet (prevents breaking URLs on title updates)
