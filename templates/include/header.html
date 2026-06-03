@@ -8,8 +8,26 @@
         <a href="{% url 'blog:index' %}">Home</a>
       </li>
       <li class="nav-item">
-        <a href="{% url "blog:index" %}">My Blogs</a>
+        <a href="{% url 'blog:blogs' %}">All Blogs</a>
       </li>
+
+    {% if user.is_authenticated %}
+      <li class="nav-item">
+        <a href="{% url "blog:my" %}">My Blogs</a>
+      </li>
+      <li class="nav-item">
+        <form method="post" action="{% url "logout" %}" style="display: inline;">
+          {% csrf_token %}
+          <button type="submit" class="btn" >Logout</button>
+        </form>
+      </li>
+
+    {% else %}
+      <li>
+        <a class="btn" href="{% url "login" %}">Login</a>
+      </li>
+    {% endif %}
+
     </ul>
   </nav>
 </header>

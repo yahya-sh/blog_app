@@ -33,6 +33,9 @@ class BlogManager(models.Manager):
         )
         now = timezone.now()
         return self.published().filter(published_at__lte=now, published_at__gte=last_week).order_by('-published_at')[:limit]
+    
+    def user_blogs(self, user):
+        self.filter(author=user).order_by('-updated_at')
 
 
 class Blog(models.Model):

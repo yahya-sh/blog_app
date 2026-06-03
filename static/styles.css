@@ -78,3 +78,14 @@ body {
 .nav-item a:active {
     transform: translateY(1px);
 }
+
+.btn{
+    background-color: var(--clr-fg);
+    color: var(--clr-bg);
+    font-weight: bold;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    text-decoration: none;
+}
