@@ -72,5 +72,5 @@ git-amend:
 git-push remote="origin" branch="main" *args:
     git push {{remote}} {{branch}} {{args}}
 
-seed:
-    uv run manage.py seed
+seed *args:
+    uv run manage.py seed {{args}}

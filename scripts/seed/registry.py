@@ -77,34 +77,60 @@ def topo_sort(seeders):
 # -------------------------
 # Resolve execution set
 # -------------------------
-def resolve_order(selected=None):
+def resolve_order(selected=None, with_deps=False):
     seeder_map = get_seeder_map()
 
-    # full run
-    if not selected:
-        seeders = list(seeder_map.values())
-    else:
-        expanded = expand_dependencies(selected, seeder_map)
-        seeders = [seeder_map[n] for n in expanded]
+    # ------------------------------------
+    # 1. build execution set
+    # ------------------------------------
+    if selected:
+        if with_deps:
+            execution_names = set()
 
-    # validate dependencies exist
-    for s in seeders:
-        for dep in s.depends_on:
+            def collect(name):
+                if name not in seeder_map:
+                    raise Exception(f"Unknown seeder: {name}")
+
+                if name in execution_names:
+                    return
+
+                execution_names.add(name)
+
+                for dep in seeder_map[name].depends_on:
+                    collect(dep)
+
+            for name in selected:
+                collect(name)
+
+        else:
+            execution_names = set(selected)
+    else:
+        execution_names = set(seeder_map.keys())
+
+    # ------------------------------------
+    # 2. validate dependencies exist
+    # ------------------------------------
+    for name in execution_names:
+        seeder = seeder_map[name]
+        for dep in seeder.depends_on:
             if dep not in seeder_map:
                 raise Exception(
-                    f"[Seeder Error] '{s.app_label}' depends on missing seeder '{dep}'"
+                    f"[Seeder Error] '{name}' depends on missing seeder '{dep}'"
                 )
 
-    return topo_sort(seeders)
-
+    # ------------------------------------
+    # 3. topo sort ONLY execution set
+    # ------------------------------------
+    return topo_sort([seeder_map[n] for n in execution_names])
 
 # -------------------------
 # Runner
 # -------------------------
 def run_all(**options):
     selected = options.get("only")
+    with_deps = options.get("with_deps", False)
 
-    seeders = resolve_order(selected)
+    seeders = resolve_order(selected, with_deps=with_deps)
 
     for s in seeders:
         print(f"→ Running {s.app_label}")

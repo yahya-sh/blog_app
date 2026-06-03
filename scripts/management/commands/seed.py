@@ -39,7 +39,7 @@ class Command(BaseCommand):
 
     def add_arguments(self, parser):
         parser.add_argument("--only", nargs="+", default=None)
-
+        parser.add_argument("--with-deps", action="store_true")
         load_seeders()
         print("SEEDERS:", [s.app_label for s in SEEDERS])
 
