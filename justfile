@@ -8,6 +8,7 @@ alias mm := makemigrations
 alias sm := showmigrations
 alias c := django
 alias command := django
+alias t := test
 alias log := git-log
 alias llog := git-line-log
 alias gllog := git-log
@@ -46,6 +47,9 @@ showmigrations *app:
 
 shell:
     uv run manage.py shell
+
+test *args="-rP":
+    uv run pytest {{args}}
 
 collectstatic:
     uv run manage.py collectstatic --no-input
