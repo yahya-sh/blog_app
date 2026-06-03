@@ -1,5 +1,6 @@
 import pytest
-from tests.conftest import * # noqa: F403
+from tests.conftest import *  # noqa: F403
+from tests.conftest import UserFactory, BlogFactory
 import datetime
 from django.db import IntegrityError
 
@@ -46,7 +47,7 @@ def test_republishing_blog_should_not_change_old_published_at_value(
 
 
 @pytest.mark.django_db
-def test_blog_slug_is_auto_generated(blog_factory: BlogFactory, user):
+def test_blog_slug_is_auto_generated(blog_factory: BlogFactory, user: UserFactory):
     """
     Confirm that a unique URL slug is automatically generated upon the first database save.
 
