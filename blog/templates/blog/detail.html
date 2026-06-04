@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block page_title %}
+  {{ blog.title }}
+{% endblock %}
+{% block content %}
+  <h1>{{ blog.title }}</h1>
+  <p>{{ blog.content }}</p>
+  {% if blog.published %}
+    <p class="date-time">{{blog.published_at|date:'Y-m-d h:i A' }}</p>
+  {% else %}
+    <p class="date-time">Last update: {{blog.updated_at|date:'Y-m-d h:i A' }}</p>
+  {% endif %}
+{% endblock %}

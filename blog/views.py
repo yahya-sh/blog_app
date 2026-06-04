@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.views.generic import ListView
+from django.views.generic import ListView, DetailView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from . import models
 
@@ -22,3 +22,9 @@ class UserBlogs(LoginRequiredMixin, ListView):
         user = self.request.user
         return models.Blog.objects.user_blogs(user)
     
+class BlogDetail(DetailView):
+    model = models.Blog
+    pk_url_kwarg = "blog_id"
+    slug_url_kwarg = 'slug'
+    query_pk_and_slug = True
+    template_name = 'blog/detail.html'
